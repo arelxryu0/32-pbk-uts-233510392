@@ -11,8 +11,15 @@
       <button type="submit">Tambah</button>
     </form>
 
-    <ul v-if="activities.length">
-      <li v-for="(activity, index) in activities" :key="index">
+    <div class="filter">
+      <label>
+        <input type="checkbox" v-model="showOnlyIncomplete" />
+        Tampilkan hanya yang belum selesai
+      </label>
+    </div>
+
+    <ul v-if="filteredActivities.length">
+      <li v-for="(activity, index) in filteredActivities" :key="index">
         <input
           type="checkbox"
           v-model="activity.done"
@@ -26,18 +33,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
-// Menyimpan kegiatan sebagai objek dengan properti `done`
+// Daftar kegiatan
 const activities = ref([
   { name: 'Belajar Vue.js', done: false },
   { name: 'Mengerjakan tugas', done: false },
-  { name: 'Olahraga pagi', done: false },
+  { name: 'Olahraga pagi', done: true },
   { name: 'Membaca buku', done: false }
 ])
 
 const newActivity = ref('')
+const showOnlyIncomplete = ref(false)
 
+// Tambah kegiatan
 const addActivity = () => {
   const trimmed = newActivity.value.trim()
   if (trimmed) {
@@ -46,9 +55,17 @@ const addActivity = () => {
   }
 }
 
+// Hapus kegiatan
 const removeActivity = (index) => {
   activities.value.splice(index, 1)
 }
+
+// Filter kegiatan
+const filteredActivities = computed(() => {
+  return showOnlyIncomplete.value
+    ? activities.value.filter(a => !a.done)
+    : activities.value
+})
 </script>
 
 <style scoped>
@@ -93,5 +110,8 @@ li input[type="checkbox"] {
 .done {
   text-decoration: line-through;
   color: #888;
+}
+.filter {
+  margin-bottom: 1rem;
 }
 </style>
