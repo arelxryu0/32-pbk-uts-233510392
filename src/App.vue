@@ -17,7 +17,7 @@
           type="checkbox"
           v-model="activity.done"
         />
-        {{ activity.name }}
+        <span :class="{ done: activity.done }">{{ activity.name }}</span>
         <button class="delete" @click="removeActivity(index)">Batalkan</button>
       </li>
     </ul>
@@ -28,7 +28,7 @@
 <script setup>
 import { ref } from 'vue'
 
-// Menggunakan objek agar bisa menandai mana yang sudah selesai
+// Menyimpan kegiatan sebagai objek dengan properti `done`
 const activities = ref([
   { name: 'Belajar Vue.js', done: false },
   { name: 'Mengerjakan tugas', done: false },
@@ -89,5 +89,9 @@ li {
 }
 li input[type="checkbox"] {
   margin-right: 0.5rem;
+}
+.done {
+  text-decoration: line-through;
+  color: #888;
 }
 </style>
