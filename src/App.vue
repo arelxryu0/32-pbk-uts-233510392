@@ -14,6 +14,7 @@
     <ul v-if="activities.length">
       <li v-for="(activity, index) in activities" :key="index">
         {{ activity }}
+        <button class="delete" @click="removeActivity(index)">Batalkan</button>
       </li>
     </ul>
     <p v-else>Tidak ada kegiatan yang tersedia.</p>
@@ -24,6 +25,10 @@
 import { ref } from 'vue'
 
 const activities = ref([
+  'Belajar Vue.js',
+  'Mengerjakan tugas',
+  'Olahraga pagi',
+  'Membaca buku'
 ])
 
 const newActivity = ref('')
@@ -34,6 +39,10 @@ const addActivity = () => {
     activities.value.push(trimmed)
     newActivity.value = ''
   }
+}
+
+const removeActivity = (index) => {
+  activities.value.splice(index, 1)
 }
 </script>
 
@@ -60,6 +69,13 @@ button {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;
+}
+.delete {
+  margin-left: 1rem;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 4px;
 }
 li {
   margin-bottom: 0.5rem;
