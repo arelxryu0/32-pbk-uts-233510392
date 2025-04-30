@@ -13,7 +13,11 @@
 
     <ul v-if="activities.length">
       <li v-for="(activity, index) in activities" :key="index">
-        {{ activity }}
+        <input
+          type="checkbox"
+          v-model="activity.done"
+        />
+        {{ activity.name }}
         <button class="delete" @click="removeActivity(index)">Batalkan</button>
       </li>
     </ul>
@@ -24,11 +28,12 @@
 <script setup>
 import { ref } from 'vue'
 
+// Menggunakan objek agar bisa menandai mana yang sudah selesai
 const activities = ref([
-  'Belajar Vue.js',
-  'Mengerjakan tugas',
-  'Olahraga pagi',
-  'Membaca buku'
+  { name: 'Belajar Vue.js', done: false },
+  { name: 'Mengerjakan tugas', done: false },
+  { name: 'Olahraga pagi', done: false },
+  { name: 'Membaca buku', done: false }
 ])
 
 const newActivity = ref('')
@@ -36,7 +41,7 @@ const newActivity = ref('')
 const addActivity = () => {
   const trimmed = newActivity.value.trim()
   if (trimmed) {
-    activities.value.push(trimmed)
+    activities.value.push({ name: trimmed, done: false })
     newActivity.value = ''
   }
 }
@@ -59,7 +64,7 @@ h1 {
 form {
   margin-bottom: 1rem;
 }
-input {
+input[type="text"] {
   padding: 0.5rem;
   font-size: 1rem;
   width: 70%;
@@ -79,5 +84,10 @@ button {
 }
 li {
   margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+li input[type="checkbox"] {
+  margin-right: 0.5rem;
 }
 </style>
